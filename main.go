@@ -1,48 +1,89 @@
-package main //DOSYA OLUŞTURMA / DOSYA BİLGİSİ EDİNME / DOSYA TAŞIMA VE ADLANDIRMA
+package main
 
 import (
-	//"fmt"
 	"fmt"
-	"log"
-	"os"
 	"time"
 )
 
-var (
-	newFile  *os.File
-	fileInfo *os.FileInfo
-	err      error
-)
-
-func main() {
-	//
-	newFile, err = os.Create("demo1.txt") // Dosya oluşturursun.     ( =  kullanıldı)
-	if err != nil {
-		log.Fatal(err)
-	}
-	//
-	fileInfo, err := os.Stat("demo.txt") //Dosya adı bilgisine ve dosya bilgilerine ulaşırsın.    ( :=  kullanıldı)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Name:", fileInfo.Name())
-	fmt.Println("Size:", fileInfo.Size())
-	fmt.Println("Perm.:", fileInfo.Mode())
-	fmt.Println("Last Mod.:", fileInfo.ModTime())
-	fmt.Println("Is Dic.:", fileInfo.IsDir())
-	//
-	time.Sleep(2 * time.Second)
-	taşıveadlandır()
-	fmt.Println("Dosya taşıma başarılı")
-	fmt.Println("---------------------------------------------------------------------------------------------------------")
+type car struct {
+	baz   float64
+	model int
+	hacim float64
 }
 
-func taşıveadlandır() {
-	yer := "demo2.txt" //dosya isimlerini kontrol et, yoksa hata verir
-	yeniyer := "./moved/demo3.txt"
-	err := os.Rename(yer, yeniyer) //dosyayı taşıdık, aynı zamanda isim değiştirebilirsin
-	fmt.Println("---------------------------------------------------------------------------------------------------------")
-	if err != nil {
-		log.Fatal(err)
+type bus struct {
+	baz   float64
+	model int
+	hacim float64
+}
+
+func (ci car) vergi() float64 {
+	var z float64
+	if ci.model < time.Now().Year()-3 {
+		if ci.hacim < 1.6 {
+			z = ci.baz * 1
+		} else {
+			z = ci.baz * 1.1
+		}
 	}
+
+	if ci.model > time.Now().Year() {
+		z = 0
+	}
+
+	if ci.model >= time.Now().Year()-3 {
+		if ci.hacim < 1.6 {
+			z = ci.baz * 2
+		} else {
+			z = ci.baz * 2.1
+		}
+	}
+	return z
+}
+
+func (ci bus) vergi() float64 {
+	var z float64
+	if ci.model < time.Now().Year()-3 {
+		if ci.hacim < 1.6 {
+			z = ci.baz * 4
+		} else {
+			z = ci.baz * 5
+		}
+	}
+
+	if ci.model > time.Now().Year() {
+		z = 0
+	}
+
+	if ci.model >= time.Now().Year()-3 {
+		if ci.hacim < 1.6 {
+			z = ci.baz * 6
+		} else {
+			z = ci.baz * 7
+		}
+	}
+	return z
+}
+
+type hesapla interface {
+	vergi() float64
+}
+
+// INTERFACE FUNC
+func calculate(i hesapla) {
+	fmt.Println("tax:", i.vergi())
+
+}
+
+func main() {
+	var baz, hacim float64
+	baz = 100
+	model := 2000
+	hacim = 1.3
+	ca := car{baz, model, hacim}
+	bu := bus{baz, model, hacim}
+	fmt.Print("car ")
+	calculate(ca)
+	fmt.Print("bus ")
+	calculate(bu)
 }
