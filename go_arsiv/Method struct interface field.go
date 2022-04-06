@@ -7,7 +7,7 @@ import (
 
 //STRUCT
 type dikdörtgen struct {
-	a, b float64 //a, b birer FIELD dır
+	a, b float64 //a, b birer FIELD dır.
 }
 type daire struct {
 	pi, r float64
